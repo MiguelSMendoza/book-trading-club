@@ -1,0 +1,30 @@
+<h1>My Books</h1>
+<p class="lead text-muted">Select a book to edit or <a routerLink="/my-books/new">add a new book</a>!</p>
+<hr/>
+<div class="list-group">
+    <div class="list-group-item" *ngFor="let book of myBooks;" [@listItem] (@listItem.done)="doNext()">
+      <div class="row">
+        <div class="col-2 text-center">
+          <img *ngIf="book.thumbnail" src="{{book.thumbnail}}" width="50px" class="img-responsive center-block"/> 
+        </div>
+        <div class="col-8">
+          <h4>{{ book.title }}</h4>
+          <span class="text-muted text-small">{{ book.author }}</span>
+        </div>
+        <div class="col-2 text-center">
+            <div ngbDropdown *ngIf="book.trader" class="d-inline-block">
+                <button class="btn btn-outline-success" id="dropdownBasic1" ngbDropdownToggle>
+                  <i class="fa fa-exchange" aria-hidden="true"></i>
+                </button>
+                <div ngbDropdownMenu aria-labelledby="dropdownBasic1">
+                  <button class="dropdown-item" (click)="onAcceptTrade(book)">Accept Trade</button>
+                  <button class="dropdown-item" (click)="onRefuseTrade(book)">Refuse Trade</button>
+                </div>
+            </div>
+              <button class="pull-right btn btn-link" (click)="onRemoveBook(book)"><i class="fa fa-trash" aria-hidden="true"></i></button>
+        </div>
+        
+      </div>
+      
+    </div>
+</div>

@@ -1,0 +1,38 @@
+<ng-template #rt let-r="result" let-t="term">
+  <img *ngIf="r.volumeInfo.imageLinks" src="{{r.volumeInfo.imageLinks.smallThumbnail}}" width="50px"/> {{ r.volumeInfo.title }} <span *ngIf="r.volumeInfo.authors">- {{r.volumeInfo.authors[0]}}</span>
+</ng-template>
+<div class="form-group jumbotron">
+  <label for="typeahead-http">Search for a Book:</label>
+  <input id="typeahead-http" type="text" class="form-control" [class.is-invalid]="searchFailed" [(ngModel)]="model" [ngbTypeahead]="search" placeholder="Book Search" (selectItem)="selectedItem($event)" [resultTemplate]="rt" [inputFormatter]="formatter"
+  />
+  <span *ngIf="searching">Searching...</span>
+  <div class="invalid-feedback" *ngIf="searchFailed">Sorry, suggestions could not be loaded.</div>
+</div>
+<form [formGroup]="bookForm" (ngSubmit)="onSubmit()">
+  <div class="row">
+  <div class="col">
+  <div class="form-group">
+      <label for="title">Title:</label>
+      <input type="text" class="form-control" id="title" formControlName="title" />
+  </div>
+  <div class="form-group">
+    <label for="author">Author:</label>
+    <input type="text" class="form-control" id="author" formControlName="author" />
+  </div>
+  <div class="form-group">
+    <label for="isbn">ISBN:</label>
+    <input type="text" class="form-control" id="isbn" formControlName="isbn" />
+</div>
+  </div>
+  <div class="col">
+    <input type="hidden" formControlName="thumbnail" #thumbnail value=""/>
+    <p><label for="thumbnail">Thumbnail:</label></p>
+    <img src="{{thumbnail.value}}" />
+  </div>
+  </div>
+  <div class="form-group">
+    <label for="description">Description:</label>
+    <textarea rows="5" class="form-control" id="description" formControlName="description" ></textarea>
+  </div>
+  <button type="submit" [disabled]="!isValid()" class="btn btn-default">Guardar</button>
+</form>
