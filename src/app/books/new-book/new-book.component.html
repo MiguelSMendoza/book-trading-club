@@ -1,14 +1,17 @@
 <ng-template #rt let-r="result" let-t="term">
-  <img *ngIf="r.volumeInfo.imageLinks" src="{{r.volumeInfo.imageLinks.smallThumbnail}}" width="50px"/> {{ r.volumeInfo.title }} <span *ngIf="r.volumeInfo.authors">- {{r.volumeInfo.authors[0]}}</span>
+  <img *ngIf="r.volumeInfo.imageLinks" src="{{r.volumeInfo.imageLinks.smallThumbnail | secure}}" width="50px"/> {{ r.volumeInfo.title }} <span *ngIf="r.volumeInfo.authors">- {{r.volumeInfo.authors[0]}}</span>
 </ng-template>
-<div class="form-group jumbotron">
+<h1>New Book</h1>
+<p class="lead text-muted">Search for a book or create your own volume information.</p>
+<hr/>
+<div class="form-group m-2 rounded bg-info p-2 m-1">
   <label for="typeahead-http">Search for a Book:</label>
   <input id="typeahead-http" type="text" class="form-control" [class.is-invalid]="searchFailed" [(ngModel)]="model" [ngbTypeahead]="search" placeholder="Book Search" (selectItem)="selectedItem($event)" [resultTemplate]="rt" [inputFormatter]="formatter"
   />
   <span *ngIf="searching">Searching...</span>
   <div class="invalid-feedback" *ngIf="searchFailed">Sorry, suggestions could not be loaded.</div>
 </div>
-<form [formGroup]="bookForm" (ngSubmit)="onSubmit()">
+<form [formGroup]="bookForm" (ngSubmit)="onSubmit()" class="bg-light p-2 rounded m-1">
   <div class="row">
   <div class="col">
   <div class="form-group">

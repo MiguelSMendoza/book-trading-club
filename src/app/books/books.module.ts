@@ -7,6 +7,7 @@ import { BooksRoutingModule } from './books-routing.module';
 import { ReactiveFormsModule, FormsModule } from '@angular/forms';
 import { HttpModule } from '@angular/http';
 import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
+import { SecurePipe } from './new-book/secure.pipe';
 
 @NgModule({
   imports: [
@@ -19,7 +20,8 @@ import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
   ],
   declarations: [
     MyBooksComponent,
-    NewBookComponent
+    NewBookComponent,
+    SecurePipe
   ],
   providers: [
     BooksService

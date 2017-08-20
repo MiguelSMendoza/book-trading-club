@@ -56,6 +56,7 @@ export class BooksService {
 
   addBook(book: Book) {
     book.owner = this.user.uid;
+    book.ownerName = this.user.displayName;
     book.timestamp = + new Date();
     return this.books.push(book);
   }
@@ -77,6 +78,7 @@ export class BooksService {
   tradeBook(book) {
     if (this.isAuthenticated && this.user.uid !== book.owner && !book.trader) {
       book.trader = this.user.uid;
+      book.traderName = this.user.displayName;
       return this.db.object('/books/' + book.$key).update(book);
     } else {
       return new firebase.Promise((resolve, reject) => {
@@ -88,6 +90,7 @@ export class BooksService {
   unTradeBook(book) {
     if (this.isAuthenticated && this.user.uid === book.trader || this.user.uid === book.owner) {
       book.trader = null;
+      book.traderName = null;
       return this.db.object('/books/' + book.$key).update(book);
     } else {
       return new firebase.Promise((resolve, reject) => {
@@ -99,6 +102,8 @@ export class BooksService {
   acceptTradeBook(book) {
     if (this.isAuthenticated && this.user.uid === book.owner) {
       book.owner = book.trader;
+      book.ownerName = book.traderName;
+      book.traderName = null;
       book.trader = null;
       return this.db.object('/books/' + book.$key).update(book);
     } else {

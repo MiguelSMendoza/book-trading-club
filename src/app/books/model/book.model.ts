@@ -9,7 +9,9 @@ export class Book {
           public description: string,
           public thumbnail: string,
           public owner: string,
+          public ownerName: string,
           public trader: string,
+          public traderName: string,
           public timestamp: number
       ) { }
   }

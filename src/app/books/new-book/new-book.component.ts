@@ -26,7 +26,7 @@ export class NewBookComponent implements OnInit {
   searchFailed = false;
   hideSearchingWhenUnsubscribed = new Observable(() => () => this.searching = false);
 
-  formatter = (x: {symbol: string}) => x.symbol;
+  formatter = (x: {symbol: string}) => '';
 
   search = (text$: Observable<string>) =>
     text$
@@ -45,10 +45,11 @@ export class NewBookComponent implements OnInit {
       .merge(this.hideSearchingWhenUnsubscribed)
 
   selectedItem(event) {
+    event.preventDefault();
     this.bookForm.get('title').setValue(event.item.volumeInfo.title);
     this.bookForm.get('description').setValue(event.item.volumeInfo.description);
     if (event.item.volumeInfo.imageLinks) {
-      this.bookForm.get('thumbnail').setValue(event.item.volumeInfo.imageLinks.thumbnail);
+      this.bookForm.get('thumbnail').setValue(event.item.volumeInfo.imageLinks.thumbnail.replace(/^http:\/\//i, 'https://'));
     }
     if (event.item.volumeInfo.authors) {
       this.bookForm.get('author').setValue(event.item.volumeInfo.authors.join(', '));
@@ -60,6 +61,9 @@ export class NewBookComponent implements OnInit {
     );
     if (isbn) {
       this.bookForm.get('isbn').setValue(isbn.identifier);
+    }
+    if (!event.item.volumeInfo.description) {
+      this.bookForm.get('description').setValue('No Description.');
     }
   }
 
