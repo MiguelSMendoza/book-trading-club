@@ -2,13 +2,16 @@
   "name": "book-trading-club",
   "version": "0.0.0",
   "license": "MIT",
+  "homepage": "https://MiguelSMendoza.github.io/book-trading-club",
   "scripts": {
     "ng": "ng",
     "start": "ng serve",
     "build": "ng build",
     "test": "ng test",
     "lint": "ng lint",
-    "e2e": "ng e2e"
+    "e2e": "ng e2e",
+    "predeploy": "ng build --base-href /book-trading-club/",
+    "deploy": "gh-pages -d dist"
   },
   "private": true,
   "dependencies": {
@@ -27,6 +30,7 @@
     "core-js": "^2.5.0",
     "firebase": "^4.3.0",
     "font-awesome": "^4.7.0",
+    "gh-pages": "^1.0.0",
     "ng2-toastr": "^4.1.2",
     "rxjs": "^5.4.1",
     "zone.js": "^0.8.14"
