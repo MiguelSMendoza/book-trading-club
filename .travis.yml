@@ -1,6 +1,6 @@
 language: node_js
 node_js:
-  - "6.9"
+  - "node"
 branches:
   only:
     - master
@@ -15,8 +15,8 @@ after_success:
  - git config --global user.email "[email protected]"
  - git remote rm origin
  - git remote add origin https://MiguelSMendoza:${GH_TOKEN}@github.com/MiguelSMendoza/book-trading-club.git
- - gh-pages -d dist
+ - npm run deploy
 notifications:
   email:
-    on_failure: change
-    on_success: change
+    on_failure: miguel@smendoza.net
+    on_success: miguel@smendoza.net
