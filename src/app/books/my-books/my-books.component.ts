@@ -21,9 +21,9 @@ import { ToastsManager } from 'ng2-toastr/ng2-toastr';
   ]
 })
 export class MyBooksComponent implements OnInit, OnDestroy {
-  myBooks: Book[];
+  myBooks: {}[];
   subscription: Subscription;
-  totalBooks: Book[];
+  totalBooks: {}[];
   next = 0;
 
   constructor(private bookService: BooksService, public toastr: ToastsManager) {
@@ -32,7 +32,7 @@ export class MyBooksComponent implements OnInit, OnDestroy {
   }
 
   ngOnInit() {
-    this.subscription = this.bookService.getUserBooks().subscribe(
+    this.subscription = this.bookService.getUserBooks().valueChanges().subscribe(
       books => {
         if (this.totalBooks.length !== books.length) {
           this.totalBooks = books.reverse();

@@ -85,10 +85,6 @@ export class NewBookComponent implements OnInit {
         this.toastr.success('Book Saved!', 'Success!');
         this.router.navigate(['../'], { relativeTo: this.route });
       }
-    ).catch(
-      (error: Error) => {
-        this.toastr.error(error.message, error.name);
-      }
     );
   }
 

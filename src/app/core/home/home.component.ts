@@ -1,5 +1,5 @@
 import { Component, OnInit, OnDestroy } from '@angular/core';
-import { FirebaseListObservable } from 'angularfire2/database';
+import { AngularFireList } from 'angularfire2/database';
 import { trigger, transition, style, animate } from '@angular/animations';
 import { Subscription } from 'rxjs/Subscription';
 import { BooksService } from '../../books/books.service';
@@ -25,8 +25,8 @@ import { ToastsManager } from 'ng2-toastr/ng2-toastr';
 })
 export class HomeComponent implements OnInit, OnDestroy {
   subscription: Subscription;
-  totalBooks: Book[];
-  books: Book[];
+  totalBooks: {}[];
+  books: {}[];
   next = 0;
   uid = '';
 
@@ -49,12 +49,12 @@ export class HomeComponent implements OnInit, OnDestroy {
    }
 
   ngOnInit() {
-    this.subscription = this.booksService.books.subscribe(
+    this.subscription = this.booksService.books.valueChanges().subscribe(
       books => {
         if (this.totalBooks.length !== books.length) {
           this.totalBooks = books.reverse();
           this.books = [];
-          this.next = 0;
+          this.next = 0; 
           this.doNext();
         }
       }

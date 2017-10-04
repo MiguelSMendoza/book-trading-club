@@ -1,14 +1,14 @@
 import { Injectable } from '@angular/core';
 import { AuthService } from '../auth/auth.service';
 import { User } from 'firebase';
-import { FirebaseListObservable, AngularFireDatabase } from 'angularfire2/database';
+import { AngularFireList, AngularFireDatabase } from 'angularfire2/database';
 import { Book } from './model/book.model';
 import { Http } from '@angular/http';
 
 @Injectable()
 export class BooksService {
   isAuthenticated: boolean;
-  books: FirebaseListObservable<Book[]>;
+  books: AngularFireList<Book>;
   user: User;
 
   constructor(
@@ -16,11 +16,7 @@ export class BooksService {
     private authService: AuthService,
     private http: Http
   ) {
-    this.books = db.list('/books', {
-      query: {
-        orderByChild: 'timestamp',
-      }
-    });
+    this.books = db.list<Book>('/books', ref => ref.orderByChild('timestamp'));
     this.authService.user.subscribe(
       (user: User) => {
         this.isAuthenticated = (user) ? true : false;
@@ -46,19 +42,14 @@ export class BooksService {
   }
 
   getUserBooks() {
-    return this.db.list('/books', {
-      query: {
-        orderByChild: 'owner',
-        equalTo: this.user.uid
-      }
-    });
+    return this.db.list<Book>('/books', ref => ref.orderByChild('owner').equalTo(this.user.uid));
   }
 
   addBook(book: Book) {
     book.owner = this.user.uid;
     book.ownerName = this.user.displayName;
     book.timestamp = + new Date();
-    return this.books.push(book);
+    return this.db.list('/books').push(book);
   }
 
   updateBook(book: Book) {
@@ -69,7 +60,7 @@ export class BooksService {
     if (this.isAuthenticated && this.user.uid === book.owner) {
       return this.db.object('/books/' + book.$key).remove();
     } else {
-      return new firebase.Promise((resolve, reject) => {
+      return new Promise((resolve, reject) => {
         reject(new Error('Not Authorized.'));
       });
     }
@@ -81,7 +72,7 @@ export class BooksService {
       book.traderName = this.user.displayName;
       return this.db.object('/books/' + book.$key).update(book);
     } else {
-      return new firebase.Promise((resolve, reject) => {
+      return new Promise((resolve, reject) => {
         reject(new Error('Not Authorized.'));
       });
     }
@@ -93,7 +84,7 @@ export class BooksService {
       book.traderName = null;
       return this.db.object('/books/' + book.$key).update(book);
     } else {
-      return new firebase.Promise((resolve, reject) => {
+      return new Promise((resolve, reject) => {
         reject(new Error('Not Authorized.'));
       });
     }
@@ -107,7 +98,7 @@ export class BooksService {
       book.trader = null;
       return this.db.object('/books/' + book.$key).update(book);
     } else {
-      return new firebase.Promise((resolve, reject) => {
+      return new Promise((resolve, reject) => {
         reject(new Error('Not Authorized.'));
       });
     }

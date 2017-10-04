@@ -14,11 +14,11 @@ import { BooksService } from '../books/books.service';
 @NgModule({
   imports: [
     CommonModule,
-    NgbModule.forRoot(),
     AppRoutingModule,
     AngularFireModule.initializeApp(environment.firebase),
     AngularFireDatabaseModule,
     AngularFireAuthModule,
+    NgbModule.forRoot()
   ],
   declarations: [HeaderComponent, HomeComponent],
   exports: [HeaderComponent, AppRoutingModule],
